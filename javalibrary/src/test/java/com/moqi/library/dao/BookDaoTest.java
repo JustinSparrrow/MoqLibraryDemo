@@ -1,4 +1,4 @@
-package com.moqi.library;
+package com.moqi.library.dao;
 
 import com.moqi.core.exception.BusinessException;
 import com.moqi.library.dao.BookDao;

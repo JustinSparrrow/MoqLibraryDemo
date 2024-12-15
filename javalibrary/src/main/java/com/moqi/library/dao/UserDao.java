@@ -6,11 +6,14 @@ import com.moqi.library.dao.bo.User;
 import com.moqi.library.mapper.UserPoMapper;
 import com.moqi.library.mapper.mapper.UserMapper;
 import com.moqi.library.mapper.po.UserPo;
+import com.moqi.library.mapper.po.UserPoExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class UserDao {
@@ -61,10 +64,23 @@ public class UserDao {
      * @throws BusinessException 自定义业务异常
      */
     public User getUserByOpenid(String openid) throws BusinessException {
-        UserPo po = userPoMapper.selectByOpenid(openid);
-        if (po == null) {
+        // 创建 UserExample，用于构建查询条件
+        UserPoExample example = new UserPoExample();
+        UserPoExample.Criteria criteria = example.createCriteria();
+        criteria.andOpenidEqualTo(openid); // 设置查询条件：openid等于传入的openID
+
+        // 使用 MyBatis 生成的 selectByExample 方法查询用户信息
+        List<UserPo> userPos = userPoMapper.selectByExample(example);
+
+        // 检查查询结果是否为空
+        if (userPos == null || userPos.isEmpty()) {
             throw new BusinessException(ReturnNo.USER_INVALID_ACCOUNT, "用户不存在");
         }
+
+        // 假设一个 openID 只会对应一个用户，取第一个结果
+        UserPo po = userPos.get(0);
+
+        // 将 UserPo 转换为 User 对象并返回
         return userMapper.userPoToUser(po);
     }
 

@@ -191,7 +191,4 @@ public interface UserPoMapper {
         "where `id` = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(UserPo row);
-
-    @Select("SELECT * FROM User WHERE openid = #{openid}")
-    UserPo selectByOpenid(String openid);
 }

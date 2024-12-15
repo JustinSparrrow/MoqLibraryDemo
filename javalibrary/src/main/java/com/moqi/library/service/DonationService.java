@@ -1,6 +1,8 @@
 package com.moqi.library.service;
 
 import com.github.pagehelper.PageHelper;
+import com.moqi.core.exception.BusinessException;
+import com.moqi.core.model.ReturnNo;
 import com.moqi.library.dao.DonationDao;
 import com.moqi.library.dao.bo.Donation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,10 @@ public class DonationService {
         return donationDao.getDonationsByUserId(userId);
     }
 
+    public Donation getDonationById(Long id) {
+        return donationDao.getDonationById(id);
+    }
+
     /**
      * 管理员查询某个用户的所有捐书记录
      *
@@ -73,5 +79,17 @@ public class DonationService {
     public List<Donation> getDonationsByBook(Long bookId, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return donationDao.getDonationsByBookId(bookId);
+    }
+
+    public Donation getValidatedDonation(Long donationId) {
+        Donation donation = donationDao.getDonationById(donationId);
+        if (donation == null || !"0".equals(donation.getStatus())) {
+            throw new BusinessException(ReturnNo.DONATION_NOT_FOUND, "捐赠记录不存在或状态无效");
+        }
+        return donation;
+    }
+
+    public void updateDonationStatus(Long donationId, int status) {
+        donationDao.updateDonationStatus(donationId, status);
     }
 }

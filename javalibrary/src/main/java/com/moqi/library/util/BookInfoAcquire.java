@@ -59,6 +59,9 @@ public class BookInfoAcquire {
                 int month = dateList.get(1);
                 int day = dateList.get(2);
 
+                // 打印实际的出版日期值
+                System.out.println("Parsed Date: " + year + "-" + month + "-" + day);
+
                 // 格式化为 yyyy-MM-dd 格式
                 String date = String.format("%04d-%02d-%02d", year, month, day);
 

@@ -19,14 +19,14 @@ public class BookService {
     private Logger logger = LoggerFactory.getLogger(BookService.class);
 
     private BookDao bookDao;
-    private DonationDao donationDao;
+    private DonationService donationService;
 
     private BookInfoAcquire bookInfoAcquire;
 
     @Autowired
-    public BookService(BookDao bookDao, DonationDao donationDao, BookInfoAcquire bookInfoAcquire) {
+    public BookService(BookDao bookDao, DonationService donationService, BookInfoAcquire bookInfoAcquire) {
         this.bookDao = bookDao;
-        this.donationDao = donationDao;
+        this.donationService = donationService;
         this.bookInfoAcquire = bookInfoAcquire;
     }
 
@@ -38,10 +38,7 @@ public class BookService {
      * @throws BusinessException 抛出异常
      */
     public Book approveAndAddBook(Long donationId) throws BusinessException {
-        Donation donation = donationDao.getDonationById(donationId);
-        if (donation == null || !donation.getStatus().equals("0")) {
-            throw new BusinessException(ReturnNo.DONATION_NOT_FOUND, "捐赠记录不存在或状态无效");
-        }
+        Donation donation = donationService.getValidatedDonation(donationId); // 交给 DonationService 验证捐赠状态
         Book bookInfo = bookInfoAcquire.fetchBookInfoByIsbn(donation.getIsbn());
         if (bookInfo == null) {
             throw new BusinessException(ReturnNo.BOOK_API_ERROR, "通过ISBN获取图书信息失败");
@@ -49,7 +46,7 @@ public class BookService {
         bookInfo.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
         Book addedBook = bookDao.createBook(bookInfo);
-        donationDao.updateDonationStatus(donationId, 1);
+        donationService.updateDonationStatus(donationId, 1); // 状态更新由 DonationService 处理
         return addedBook;
     }
 
@@ -60,10 +57,14 @@ public class BookService {
      * @throws BusinessException 抛出异常
      */
     public void rejectDonation(Long donationId) throws BusinessException {
-        Donation donation = donationDao.getDonationById(donationId);
+        Donation donation = donationService.getDonationById(donationId);
         if (donation == null || !donation.getStatus().equals("0")) {
             throw new BusinessException(ReturnNo.DONATION_NOT_FOUND, "捐赠记录不存在或状态无效");
         }
-        donationDao.updateDonationStatus(donationId, 2);
+        donationService.updateDonationStatus(donationId, 2);
+    }
+
+    public void deleteBook(Long id) throws BusinessException {
+
     }
 }
