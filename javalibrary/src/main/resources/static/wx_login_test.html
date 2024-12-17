@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信登录测试</title>
+</head>
+<body>
+<h2>微信登录测试 - 获取 Code</h2>
+<button id="getCodeBtn">获取 Code</button>
+<p id="codeDisplay" style="color: green; font-weight: bold;"></p>
+<p id="errorMsg" style="color: red;"></p>
+
+<script>
+    const appId = 'wx65d9eba33c0bddcd'; // 替换为你自己的微信小程序 App ID
+    const redirectUri = encodeURIComponent('www.moqi221.cn'); // 你的服务器回调地址
+
+    // 绑定按钮点击事件
+    document.getElementById('getCodeBtn').addEventListener('click', function () {
+        // 跳转到微信 OAuth 授权页面
+        const wxAuthUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect`;
+        window.location.href = wxAuthUrl;
+    });
+
+    // 获取 URL 中的 code 参数
+    window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        if (code) {
+            document.getElementById('codeDisplay').innerText = '获取到的 Code: ' + code;
+        } else {
+            document.getElementById('errorMsg').innerText = '未能获取到 Code，请检查授权流程。';
+        }
+    };
+</script>
+</body>
+</html>

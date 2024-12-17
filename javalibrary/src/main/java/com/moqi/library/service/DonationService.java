@@ -89,7 +89,7 @@ public class DonationService {
 
     public Donation getValidatedDonation(Long donationId) {
         Donation donation = donationDao.getDonationById(donationId);
-        if (donation == null || !"0".equals(donation.getStatus())) {
+        if (donation == null || !(donation.getStatus() == 0)) {
             throw new BusinessException(ReturnNo.DONATION_NOT_FOUND, "捐赠记录不存在或状态无效");
         }
         return donation;

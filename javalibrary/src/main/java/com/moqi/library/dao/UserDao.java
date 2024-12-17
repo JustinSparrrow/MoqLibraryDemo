@@ -89,9 +89,18 @@ public class UserDao {
      * @param userId 用户id
      * @param role 用户权限
      */
-    public void updateUserRole(Long userId, String role) {
+    public void updateUserRole(Long userId, String role) throws BusinessException {
         UserPo po = userPoMapper.selectByPrimaryKey(userId);
         po.setRole(role);
         userPoMapper.updateByPrimaryKeySelective(po);
+    }
+
+    public User updateUserInfo(User user) throws BusinessException {
+        UserPo po = userMapper.userToUserPo(user);
+        int ret = userPoMapper.updateByPrimaryKeySelective(po);
+        if (ret == 0) {
+            throw new BusinessException(ReturnNo.BOOK_NOT_FOUND);
+        }
+        return userMapper.userPoToUser(po);
     }
 }

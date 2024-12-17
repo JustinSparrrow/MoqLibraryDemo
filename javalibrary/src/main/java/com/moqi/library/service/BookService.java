@@ -59,7 +59,7 @@ public class BookService {
      */
     public void rejectDonation(Long donationId) throws BusinessException {
         Donation donation = donationService.getDonationById(donationId);
-        if (donation == null || !donation.getStatus().equals("0")) {
+        if (donation == null || !donation.getStatus().equals(0)) {
             throw new BusinessException(ReturnNo.DONATION_NOT_FOUND, "捐赠记录不存在或状态无效");
         }
         donationService.updateDonationStatus(donationId, 2);
