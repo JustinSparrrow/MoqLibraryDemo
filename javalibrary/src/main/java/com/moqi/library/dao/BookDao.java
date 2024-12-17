@@ -59,13 +59,14 @@ public class BookDao {
      *
      * @param book 传入的book对象
      */
-    public void modifyBook(Book book) throws BusinessException {
+    public Book modifyBook(Book book) throws BusinessException {
         book.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         BookPoWithBLOBs po = bookMapper.bookToBookPoWithBLOBs(book);
         int ret = bookPoMapper.updateByPrimaryKeySelective(po);
         if (ret == 0) {
             throw new BusinessException(ReturnNo.BOOK_NOT_FOUND);
         }
+        return bookMapper.bookPoWithBLOBsToBook(po);
     }
 
     /**

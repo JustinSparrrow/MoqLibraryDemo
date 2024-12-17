@@ -64,6 +64,9 @@ public enum ReturnNo {
     BOOK_ALREADY_BORROWED(302, "图书(id=%d)已被借出"),
     BORROW_LIMIT_EXCEEDED(303, "用户已达到借阅限制"),
     BOOK_RETURN_FAILED(304, "图书(id=%d)归还失败"),
+    BORROW_RECORD_FAILED(305, "删除借阅记录失败"),
+    INVALID_TRANSACTION(306, "无效的借阅记录"),
+    TRANSACTION_OVERDUE(307, "已经逾期"),
 
     /***************************************************
      *    捐赠模块错误码

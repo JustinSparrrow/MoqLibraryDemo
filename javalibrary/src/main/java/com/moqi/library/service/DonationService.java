@@ -51,6 +51,12 @@ public class DonationService {
         return donationDao.getDonationsByUserId(userId);
     }
 
+    /**
+     * 通过id查询捐赠记录
+     *
+     * @param id 捐赠id
+     * @return 捐赠记录
+     */
     public Donation getDonationById(Long id) {
         return donationDao.getDonationById(id);
     }
@@ -89,6 +95,12 @@ public class DonationService {
         return donation;
     }
 
+    /**
+     * 修改捐赠状态
+     *
+     * @param donationId 捐赠id
+     * @param status 状态
+     */
     public void updateDonationStatus(Long donationId, int status) {
         donationDao.updateDonationStatus(donationId, status);
     }

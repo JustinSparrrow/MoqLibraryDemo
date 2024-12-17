@@ -77,7 +77,6 @@ public class UserDao {
             throw new BusinessException(ReturnNo.USER_INVALID_ACCOUNT, "用户不存在");
         }
 
-        // 假设一个 openID 只会对应一个用户，取第一个结果
         UserPo po = userPos.get(0);
 
         // 将 UserPo 转换为 User 对象并返回

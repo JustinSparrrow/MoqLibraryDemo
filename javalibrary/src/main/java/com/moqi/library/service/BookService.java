@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -65,6 +66,27 @@ public class BookService {
     }
 
     public void deleteBook(Long id) throws BusinessException {
+        bookDao.deleteBook(id);
+    }
 
+    public List<Book> allBooksInfo() throws BusinessException {
+        return bookDao.getAllBooks();
+    }
+
+    public Book getBookById(Long id) throws BusinessException {
+        return bookDao.getBookById(id);
+    }
+
+    public List<Book> getSameBooksInfo(String book_name) throws BusinessException {
+        return bookDao.getBooksByName(book_name);
+    }
+
+    public Book updateBook(Long id, Book newBookData) throws BusinessException {
+        Book existingBook = getBookById(id);
+        existingBook.setBookName(newBookData.getBookName());
+        existingBook.setAuthor(newBookData.getAuthor());
+        existingBook.setPress(newBookData.getPress());
+        existingBook.setStatus(newBookData.getStatus());
+        return bookDao.modifyBook(existingBook);
     }
 }
