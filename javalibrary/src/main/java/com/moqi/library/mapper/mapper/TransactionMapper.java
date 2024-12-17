@@ -21,9 +21,11 @@ public interface TransactionMapper {
     TransactionMapper INSTANCE = Mappers.getMapper(TransactionMapper.class);
 
     @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "mapTimestampToLocalDateTime")
+    @Mapping(target = "updatedAt", source = "updatedAt", qualifiedByName = "mapTimestampToLocalDateTime")
     TransactionPo transactionToTransactionPo(Transaction transaction);
 
     @Mapping(target = "createdAt", source = "createdAt", qualifiedByName = "mapLocalDateTimeToTimestamp")
+    @Mapping(target = "updatedAt", source = "updatedAt", qualifiedByName = "mapLocalDateTimeToTimestamp")
     Transaction transactionPoTotransaction(TransactionPo transactionPo);
 
     TransactionDto transactionToTransactionDto(Transaction transaction);
