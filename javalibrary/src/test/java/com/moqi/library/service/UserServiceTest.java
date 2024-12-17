@@ -1,6 +1,5 @@
 package com.moqi.library.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moqi.core.exception.BusinessException;
 import com.moqi.core.model.ReturnNo;
 import com.moqi.library.config.WxConfig;
@@ -14,8 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
